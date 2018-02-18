@@ -11,6 +11,9 @@ import com.example.itamarborges.popularmoviesstage2.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +23,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     public final static String INTENT_KEY_ID = "key_id";
 
     @BindView(R.id.tv_movie_title) TextView mMovieTitle;
+    @BindView(R.id.tv_movie_runtime) TextView mMovieRuntime;
+    @BindView(R.id.tv_movie_tagline) TextView mMovieTagline;
     @BindView(R.id.tv_movie_release_date) TextView mMovieReleaseDate;
     @BindView(R.id.tv_movie_vote_average) TextView mMovieVoteAverage;
     @BindView(R.id.tv_movie_plot) TextView mMoviePlot;
@@ -49,11 +54,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void onMovieHasLoaded(MovieDetails movieDetails) {
-        mMovieTitle.setText(getString(R.string.movie_title).concat(" " + movieDetails.getTitle()));
-        mMovieReleaseDate.setText(getString(R.string.movie_release_date).concat(" " + movieDetails.getReleaseDate()));
-        mMovieVoteAverage.setText(getString(R.string.movie_vote_average).concat(" " + String.valueOf(movieDetails.getVoteAverage())));
-        mMoviePlot.setText(getString(R.string.movie_plot).concat(" " + movieDetails.getPlot()));
+        mMovieTitle.setText(movieDetails.getTitle());
+        try{
+            mMovieReleaseDate.setText(String.valueOf(new SimpleDateFormat("yyyy").format(new SimpleDateFormat("yyyy-m-d").parse(movieDetails.getReleaseDate()))));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mMovieVoteAverage.setText(String.valueOf(movieDetails.getVoteAverage()).concat("/10"));
+        mMoviePlot.setText(movieDetails.getPlot());
         Picasso.with(this).load(movieDetails.getUrlCover()).into(mMovieCover);
+        mMovieRuntime.setText(String.valueOf(movieDetails.getRuntime().intValue()).concat("min"));
+        mMovieTagline.setText(movieDetails.getTagline());
 
     }
 }

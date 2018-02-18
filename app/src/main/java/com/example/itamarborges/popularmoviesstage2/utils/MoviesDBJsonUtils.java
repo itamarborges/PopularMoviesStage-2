@@ -56,6 +56,9 @@ public final class MoviesDBJsonUtils {
         final String MOVIE_VOTE_AVERAGE = "vote_average";
         final String MOVIE_PLOT = "overview";
         final String MOVIES_POSTER_PATH = "poster_path";
+        final String MOVIE_RUNTIME = "runtime";
+        final String MOVIE_TAGLINE= "tagline";
+
 
         final String urlBaseCover = "http://image.tmdb.org/t/p/w185";
 
@@ -66,15 +69,19 @@ public final class MoviesDBJsonUtils {
         Double movieVoteAverage;
         String moviePlot;
         String pathMovieCover;
+        Double movieRuntime;
+        String movieTagline;
 
         movieTitle = movieJson.getString(MOVIE_TITLE);
         movieReleaseDate = movieJson.getString(MOVIE_RELEASE_DATE);
         movieVoteAverage = movieJson.getDouble(MOVIE_VOTE_AVERAGE);
         moviePlot = movieJson.getString(MOVIE_PLOT);
+        movieRuntime = movieJson.getDouble(MOVIE_RUNTIME);
+        movieTagline = movieJson.getString(MOVIE_TAGLINE);
 
         pathMovieCover = urlBaseCover.concat(movieJson.getString(MOVIES_POSTER_PATH));
 
-        MovieDetails movieDetails = new MovieDetails(movieTitle, movieReleaseDate, movieVoteAverage, moviePlot, pathMovieCover);
+        MovieDetails movieDetails = new MovieDetails(movieTitle, movieReleaseDate, movieVoteAverage, moviePlot, pathMovieCover, movieRuntime, movieTagline);
 
         return movieDetails;
     }

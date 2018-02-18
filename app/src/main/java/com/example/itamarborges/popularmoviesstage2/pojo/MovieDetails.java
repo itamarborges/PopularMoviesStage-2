@@ -10,14 +10,34 @@ public class MovieDetails {
     private Double voteAverage;
     private String plot;
     private String urlCover;
+    private Double runtime;
+    private String tagline;
 
 
-    public MovieDetails(String title, String releaseDate, Double voteAverage, String plot, String urlCover) {
+    public MovieDetails(String title, String releaseDate, Double voteAverage, String plot, String urlCover, Double runtime, String tagline) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.voteAverage = voteAverage;
         this.plot = plot;
         this.urlCover = urlCover;
+        this.runtime = runtime;
+        this.tagline = tagline;
+    }
+
+    public Double getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Double runtime) {
+        this.runtime = runtime;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
     }
 
     public String getTitle() {
