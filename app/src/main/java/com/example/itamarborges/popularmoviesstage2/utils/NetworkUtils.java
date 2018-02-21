@@ -23,6 +23,9 @@ public class NetworkUtils {
     public final static String THE_MOVIE_DB_SORT_POPULAR = "popular";
     public final static String THE_MOVIE_DB_SORT_HIGHEST_RATED = "top_rated";
 
+    public final static String THE_MOVIE_DB_VIDEOS = "videos";
+    public final static String THE_MOVIE_DB_REVIEWS = "reviews";
+
     final static String THE_MOVIE_DB_API_KEY = "api_key";
 
     final static String API_KEY = BuildConfig.API_KEY;
@@ -31,6 +34,23 @@ public class NetworkUtils {
     public static URL buildUrl(String path) {
         Uri builtUri = Uri.parse(THE_MOVIE_DB_BASE_URL).buildUpon()
                 .appendPath(path)
+                .appendQueryParameter(THE_MOVIE_DB_API_KEY, API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildUrlAditionalPath(String path, String aditionalPath) {
+        Uri builtUri = Uri.parse(THE_MOVIE_DB_BASE_URL).buildUpon()
+                .appendPath(path)
+                .appendPath(aditionalPath)
                 .appendQueryParameter(THE_MOVIE_DB_API_KEY, API_KEY)
                 .build();
 

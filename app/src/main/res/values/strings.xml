@@ -8,6 +8,8 @@
     <string name="movie_plot">Plot:</string>
     <string name="error_message">Something went wrong. Try again!</string>
     <string name="try_again">Try Again!</string>
+    <string name="trailers_title">Trailers</string>
+    <string name="reviews_title">Reviews</string>
 
     <string-array name="order_by_options">
         <item>Highest rated</item>

@@ -2,6 +2,8 @@ package com.example.itamarborges.popularmoviesstage2.utils;
 
 import com.example.itamarborges.popularmoviesstage2.pojo.MovieDetails;
 import com.example.itamarborges.popularmoviesstage2.pojo.MovieCover;
+import com.example.itamarborges.popularmoviesstage2.pojo.MovieReview;
+import com.example.itamarborges.popularmoviesstage2.pojo.MovieVideo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +59,7 @@ public final class MoviesDBJsonUtils {
         final String MOVIE_PLOT = "overview";
         final String MOVIES_POSTER_PATH = "poster_path";
         final String MOVIE_RUNTIME = "runtime";
-        final String MOVIE_TAGLINE= "tagline";
+        final String MOVIE_TAGLINE = "tagline";
 
 
         final String urlBaseCover = "http://image.tmdb.org/t/p/w185";
@@ -84,5 +86,70 @@ public final class MoviesDBJsonUtils {
         MovieDetails movieDetails = new MovieDetails(movieTitle, movieReleaseDate, movieVoteAverage, moviePlot, pathMovieCover, movieRuntime, movieTagline);
 
         return movieDetails;
+    }
+
+    public static List<MovieVideo> getMovieVideos(String movieJsonStr)
+            throws JSONException {
+
+        List<MovieVideo> movieVideos = new ArrayList<>();
+
+        final String MOVIE_VIDEO_SITE_YOUTUBE = "YouTube";
+
+        final String MOVIE_VIDEO_KEY = "key";
+        final String MOVIE_VIDEO_NAME = "name";
+        final String MOVIE_VIDEO_SITE = "site";
+        final String MOVIE_VIDEO_RESULTS = "results";
+
+        JSONObject movieVideosJson = new JSONObject(movieJsonStr);
+        JSONArray videosArray = movieVideosJson.getJSONArray(MOVIE_VIDEO_RESULTS);
+
+        for (int i = 0; i < videosArray.length(); i++) {
+
+            String key;
+            String name;
+
+            // Get the JSON object representing the one video
+            JSONObject videoJson = videosArray.getJSONObject(i);
+
+            if (videoJson.getString(MOVIE_VIDEO_SITE).equals(MOVIE_VIDEO_SITE_YOUTUBE)) {
+                key = videoJson.getString(MOVIE_VIDEO_KEY);
+                name = videoJson.getString(MOVIE_VIDEO_NAME);
+
+                MovieVideo movieVideo = new MovieVideo(key, name);
+
+                movieVideos.add(movieVideo);
+            }
+        }
+        return movieVideos;
+    }
+
+    public static List<MovieReview> getMovieReviews(String movieJsonStr)
+            throws JSONException {
+
+        List<MovieReview> movieReviews = new ArrayList<>();
+
+        final String MOVIE_REVIEW_AUTHOR = "author";
+        final String MOVIE_REVIEW_CONTENT = "content";
+        final String MOVIE_REVIEW_RESULTS = "results";
+
+        JSONObject movieReviewsJson = new JSONObject(movieJsonStr);
+        JSONArray reviewsArray = movieReviewsJson.getJSONArray(MOVIE_REVIEW_RESULTS);
+
+        for (int i = 0; i < reviewsArray.length(); i++) {
+
+            String author;
+            String content;
+
+            // Get the JSON object representing the one video
+            JSONObject reviewJson = reviewsArray.getJSONObject(i);
+
+            author = reviewJson.getString(MOVIE_REVIEW_AUTHOR);
+            content = reviewJson.getString(MOVIE_REVIEW_CONTENT);
+
+            MovieReview movieReview = new MovieReview(author, content);
+
+            movieReviews.add(movieReview);
+        }
+        return movieReviews;
     }
 }
