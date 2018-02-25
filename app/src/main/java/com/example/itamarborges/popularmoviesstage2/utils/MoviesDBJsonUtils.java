@@ -24,6 +24,7 @@ public final class MoviesDBJsonUtils {
         final String MOVIES_RESULTS = "results";
 
         final String MOVIE_ID = "id";
+        final String MOVIE_TITLE = "title";
         final String MOVIES_POSTER_PATH = "poster_path";
 
         final String urlBaseCover = "http://image.tmdb.org/t/p/w185";
@@ -37,12 +38,14 @@ public final class MoviesDBJsonUtils {
         for (int i = 0; i < moviesArray.length(); i++) {
             int idMovie;
             String pathMovieCover;
+            String titleMovie;
 
             JSONObject movieItem = moviesArray.getJSONObject(i);
             idMovie = movieItem.getInt(MOVIE_ID);
             pathMovieCover = urlBaseCover.concat(movieItem.getString(MOVIES_POSTER_PATH));
+            titleMovie = movieItem.getString(MOVIE_TITLE);
 
-            MovieCover movieCover = new MovieCover(idMovie, pathMovieCover);
+            MovieCover movieCover = new MovieCover(idMovie, pathMovieCover, titleMovie);
 
             mMoviesCover.add(movieCover);
 

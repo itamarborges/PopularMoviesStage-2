@@ -1,5 +1,8 @@
 package com.example.itamarborges.popularmoviesstage2.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 
 import com.example.itamarborges.popularmoviesstage2.BuildConfig;
@@ -22,6 +25,7 @@ public class NetworkUtils {
 
     public final static String THE_MOVIE_DB_SORT_POPULAR = "popular";
     public final static String THE_MOVIE_DB_SORT_HIGHEST_RATED = "top_rated";
+    public final static String THE_MOVIE_DB_SORT_FAVORITES = "favorites";
 
     public final static String THE_MOVIE_DB_VIDEOS = "videos";
     public final static String THE_MOVIE_DB_REVIEWS = "reviews";
@@ -81,5 +85,12 @@ public class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    static public boolean isNetworkAvailable(Context c) {
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }

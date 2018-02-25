@@ -54,7 +54,6 @@ public class MoviesAsyncTask extends AsyncTask<URL, Void, List<MovieCover>> {
         if (movieCovers != null) {
 
             mMoviesListAdapter.setMoviesCover(movieCovers);
-            mMoviesListAdapter.notifyDataSetChanged();
 
             mShowElements.showMoviesList();
         } else {

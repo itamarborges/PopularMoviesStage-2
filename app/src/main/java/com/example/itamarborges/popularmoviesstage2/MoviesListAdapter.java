@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.itamarborges.popularmoviesstage2.pojo.MovieCover;
+import com.example.itamarborges.popularmoviesstage2.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -30,6 +32,7 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
     public void setMoviesCover(List<MovieCover> mMoviesCover) {
         this.mMoviesCover = mMoviesCover;
+        this.notifyDataSetChanged();
     }
 
     private List<MovieCover> mMoviesCover;
@@ -68,6 +71,8 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
         Context mContext;
         int mMovieId;
+        String mMovieTitle;
+        String mMovierUrlCover;
 
         public MovieListViewHolder(View itemView, Context context) {
             super(itemView);
@@ -80,15 +85,24 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         void bind(MovieCover movieCover) {
             Picasso.with(mContext).load(movieCover.getUrlCover()).into(mMovieCover);
             mMovieId = movieCover.getId();
+            mMovieTitle = movieCover.getTitle();
+            mMovierUrlCover = movieCover.getUrlCover();
         }
 
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(mContext, MovieDetailsActivity.class);
-            intent.putExtra(MovieDetailsActivity.INTENT_KEY_ID, mMovieId);
+            if (NetworkUtils.isNetworkAvailable(mContext)) {
+                Intent intent = new Intent(mContext, MovieDetailsActivity.class);
+                intent.putExtra(MovieDetailsActivity.INTENT_KEY_ID, mMovieId);
+                intent.putExtra(MovieDetailsActivity.INTENT_KEY_TITLE, mMovieTitle);
+                intent.putExtra(MovieDetailsActivity.INTENT_KEY_URL_COVER, mMovierUrlCover);
 
-            mContext.startActivity(intent);
+                mContext.startActivity(intent);
+            } else {
+                Toast.makeText(mContext, R.string.verify_internet, Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }
