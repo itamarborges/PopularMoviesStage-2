@@ -3,6 +3,7 @@ package com.example.itamarborges.popularmoviesstage2;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -49,9 +50,13 @@ public class MainActivity extends AppCompatActivity implements ShowElements, Loa
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIES_LOADER_ID = 0;
 
+    private static final String KEY_INSTANCE_STATE_RV_POSITION = "key_instance_state_rv_position";
+
     MovieModel movieModel = new MovieModel();
 
     private List<MovieCover> mMoviesCover = new ArrayList<>();
+    private GridLayoutManager mLayoutManager;
+    private Parcelable mLayoutManagerSavedState;
 
     @BindView(R.id.rv_movies_cover) RecyclerView mMoviesCoverList;
     @BindView(R.id.sp_sort_criteria) Spinner mSpinnerSort;
@@ -75,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements ShowElements, Loa
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        mMoviesCoverList.setLayoutManager(layoutManager);
+        mLayoutManager = new GridLayoutManager(this, 2);
+        mMoviesCoverList.setLayoutManager(mLayoutManager);
 
         mAdapter = new MoviesListAdapter(new ArrayList<MovieCover>());
         mMoviesCoverList.setAdapter(mAdapter);
@@ -85,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements ShowElements, Loa
             if (savedInstanceState.containsKey(SPINNER_INDEX)) {
                 int spinnerIndex = savedInstanceState.getInt(SPINNER_INDEX);
                 mSpinnerSort.setSelection(spinnerIndex,true);
+            }
+            if (savedInstanceState.containsKey(KEY_INSTANCE_STATE_RV_POSITION)) {
+                mLayoutManagerSavedState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
             }
         }
 
@@ -144,6 +152,10 @@ public class MainActivity extends AppCompatActivity implements ShowElements, Loa
         mMoviesCoverList.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
         mErrorLayout.setVisibility(View.GONE);
+
+        if (mLayoutManagerSavedState != null) {
+            mLayoutManager.onRestoreInstanceState(mLayoutManagerSavedState);
+        }
     }
 
     @Override
@@ -205,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements ShowElements, Loa
 
         int spinnerIndex = mSpinnerSort.getSelectedItemPosition();
         outState.putInt(SPINNER_INDEX, spinnerIndex);
+        outState.putParcelable(KEY_INSTANCE_STATE_RV_POSITION, mLayoutManager.onSaveInstanceState());
 
     }
 
@@ -225,6 +238,9 @@ public class MainActivity extends AppCompatActivity implements ShowElements, Loa
         if (savedInstanceState.containsKey(SPINNER_INDEX)) {
             int spinnerIndex = savedInstanceState.getInt(SPINNER_INDEX);
             mSpinnerSort.setSelection(spinnerIndex, true);
+        }
+        if (savedInstanceState.containsKey(KEY_INSTANCE_STATE_RV_POSITION)) {
+            mLayoutManagerSavedState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
         }
     }
 
